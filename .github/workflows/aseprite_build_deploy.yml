@@ -64,7 +64,7 @@ jobs:
   build-aseprite:
     name: Build Aseprite
     needs: check-version
-    if: ${{ needs.check-version.outputs.should_build }} && contains(${{ steps.version_info.outputs.latest_tag }}, 'beta') == false && contains(${{ steps.version_info.outputs.latest_tag }}, 'rc') == false
+    if: ${{ needs.check-version.outputs.should_build }} && contains(${{ needs.check-version.outputs.latest_tag }}, 'beta') == false && contains(${{ needs.check-version.outputs.latest_tag }}, 'rc') == false
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
