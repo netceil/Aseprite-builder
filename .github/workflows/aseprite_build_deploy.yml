@@ -157,7 +157,7 @@ jobs:
           rm -f strings/*.ini
           curl -o strings-main.zip -L https://codeload.github.com/aseprite/strings/zip/refs/heads/main
           unzip strings-main.zip -d strings-main
-          cp strings-main/*.ini strings
+          cp strings-main/strings-main/*.ini strings
           rm -rf strings-main
       - name: (Windows) Rename Executable File
         if: matrix.os == 'windows-latest'
