@@ -44,7 +44,7 @@ jobs:
         key: cached_version
     - name: Should we start new build?
       id: should_build
-      if: steps.version_check.outputs.cache-hit != 'true' && contains(${{ steps.version_info.outputs.latest_tag }}, 'beta') == false && contains(${{ steps.version_info.outputs.latest_tag }}, 'rc') == false
+      if: steps.version_check.outputs.cache-hit != 'true' && contains(steps.version_info.outputs.latest_tag, 'beta') == false && contains(steps.version_info.outputs.latest_tag, 'rc') == false
       run: echo "should_build=true" >> $GITHUB_OUTPUT
     - name: Create Release
       id: create_release
