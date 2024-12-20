@@ -67,7 +67,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macOS-latest]
+        # os: [windows-latest, ubuntu-latest, macOS-latest]
+        os: [windows-latest, ubuntu-latest]
         arch: [x64]
         include:
           - os: macOS-latest
@@ -153,6 +154,7 @@ jobs:
         run: echo '# This file is here so Aseprite behaves as a portable program' > aseprite.ini
       - name: Add Multilingual
         working-directory: aseprite/build/bin/data
+        shell: bash
         run: |
           rm -f strings/*.ini
           curl -o strings-main.zip -L https://codeload.github.com/aseprite/strings/zip/refs/heads/main
@@ -201,7 +203,8 @@ jobs:
 
           mkdir -p Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN
           echo "Package: aseprite" > Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
-          echo "Version: ${{ needs.check-version.outputs.latest_tag }}" >> Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
+          CLEAN_VERSION=$(echo "${{ needs.check-version.outputs.latest_tag }}" | sed 's/^v//')
+          echo "Version: $CLEAN_VERSION" >> Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
           echo "Architecture: amd64" >> Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
           echo "Maintainer: Aseprite Team <contact@aseprite.org>" >> Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
           echo "Description: Aseprite is an animated sprite editor" >> Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
