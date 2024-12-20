@@ -38,18 +38,17 @@ jobs:
 
     - name: Load version from cache
       id: version_check
-      if: contains(steps.version_info.outputs.latest_tag, 'beta') == false && contains(steps.version_info.outputs.latest_tag, 'rc') == false
       uses: actions/cache@v3
       with:
         path: ${{ steps.version_info.outputs.latest_tag }}.txt
         key: cached_version
     - name: Should we start new build?
       id: should_build
-      if: steps.version_check.outputs.cache-hit != 'true' && contains(steps.version_info.outputs.latest_tag, 'beta') == false && contains(steps.version_info.outputs.latest_tag, 'rc') == false
+      if: steps.version_check.outputs.cache-hit != 'true' && contains(${{ steps.version_info.outputs.latest_tag }}, 'beta') == false && contains(${{ steps.version_info.outputs.latest_tag }}, 'rc') == false
       run: echo "should_build=true" >> $GITHUB_OUTPUT
     - name: Create Release
       id: create_release
-      if: steps.should_build.outputs.should_build && contains(steps.version_info.outputs.latest_tag, 'beta') == false && contains(steps.version_info.outputs.latest_tag, 'rc') == false
+      if: steps.should_build.outputs.should_build
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -64,7 +63,7 @@ jobs:
   build-aseprite:
     name: Build Aseprite
     needs: check-version
-    if: ${{ needs.check-version.outputs.should_build }} && contains(${{ needs.check-version.outputs.latest_tag }}, 'beta') == false && contains(${{ needs.check-version.outputs.latest_tag }}, 'rc') == false
+    if: ${{ needs.check-version.outputs.should_build }}
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -152,6 +151,14 @@ jobs:
       - name: Add .ini file
         working-directory: aseprite/build/bin
         run: echo '# This file is here so Aseprite behaves as a portable program' > aseprite.ini
+      - name: Add Multilingual
+        working-directory: aseprite/build/bin/data
+        run: |
+          rm -f strings/*.ini
+          curl -o strings-main.zip -L https://codeload.github.com/aseprite/strings/zip/refs/heads/main
+          unzip strings-main.zip -d strings-main
+          cp strings-main/*.ini strings
+          rm -rf strings-main
       - name: (Windows) Rename Executable File
         working-directory: aseprite/build/bin
         if: matrix.os == 'windows-latest'
