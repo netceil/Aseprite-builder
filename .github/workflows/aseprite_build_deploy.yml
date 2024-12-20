@@ -25,7 +25,7 @@ jobs:
     - name: Get latest version info
       id: version_info
       run: |
-        data=$(curl -sL https://api.github.com/repos/aseprite/aseprite/releases/latest)
+        data=$(curl -sL https://api.github.com/repos/aseprite/aseprite/releases/186770485)
         LATEST_TAG=$(echo "${data}" | jq -r '.tag_name')
         DOWNLOAD_URL=$(echo "${data}" | jq -r '.assets[].browser_download_url')
         VERSION_INFO=$(echo "${data}" | jq -r '.body')
@@ -160,13 +160,13 @@ jobs:
           cp strings-main/*.ini strings
           rm -rf strings-main
       - name: (Windows) Rename Executable File
-        working-directory: aseprite/build/bin
         if: matrix.os == 'windows-latest'
+        working-directory: aseprite/build/bin
         run: ren aseprite.exe Aseprite.exe
 
       - name: (macOS) Make App
-        working-directory: aseprite/build/bin
         if: matrix.os == 'macOS-latest'
+        working-directory: aseprite/build/bin
         run: |
           mkdir -p Aseprite.app/Contents/MacOS
           mkdir -p Aseprite.app/Contents/Resources
@@ -188,43 +188,52 @@ jobs:
           rm -f aseprite.ini
           rm -rf data
         
-      # - name: (Ubuntu) Build .deb package
-      #   working-directory: aseprite/build/bin
-      #   run: |
-      #     mkdir -p Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/usr/bin
-      #     mkdir -p Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/usr/share/aseprite
+      - name: (Ubuntu) Build .deb package
+        if: matrix.os == 'ubuntu-latest'
+        working-directory: aseprite/build/bin
+        run: |
+          mkdir -p Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/usr/bin
+          mkdir -p Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/usr/share/aseprite
 
-      #     cp aseprite Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/usr/bin
-      #     cp aseprite.ini Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/usr/share/aseprite
-      #     cp -r data Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/usr/share/aseprite
+          cp aseprite Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/usr/bin
+          cp aseprite.ini Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/usr/share/aseprite
+          cp -r data Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/usr/share/aseprite
 
-      #     mkdir -p Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN
-      #     echo "Package: aseprite" > Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
-      #     echo "Version: ${{ needs.check-version.outputs.latest_tag }}" >> Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
-      #     echo "Architecture: amd64" >> Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
-      #     echo "Maintainer: Aseprite Team <contact@aseprite.org>" >> Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
-      #     echo "Description: Aseprite is an animated sprite editor" >> Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
-      #     echo "Depends: libc6, libx11-6, libfontconfig1, libgl1, libxrender1" >> Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
-      #     dpkg-deb --build Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64
+          mkdir -p Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN
+          echo "Package: aseprite" > Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
+          echo "Version: ${{ needs.check-version.outputs.latest_tag }}" >> Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
+          echo "Architecture: amd64" >> Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
+          echo "Maintainer: Aseprite Team <contact@aseprite.org>" >> Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
+          echo "Description: Aseprite is an animated sprite editor" >> Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
+          echo "Depends: libc6, libx11-6, libfontconfig1, libgl1, libxrender1" >> Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64/DEBIAN/control
+          dpkg-deb --build Aseprite_${{ needs.check-version.outputs.latest_tag }}_amd64
 
-      # - name: (Ubuntu) Build .AppImage
-      #   working-directory: aseprite/build/bin
-      #   run: |
-      #     mkdir -p Aseprite.AppDir/usr/bin
-      #     mkdir -p Aseprite.AppDir/usr/share/aseprite
-      #     mkdir -p Aseprite.AppDir/usr/share/icons
-      #     mkdir -p Aseprite.AppDir/usr/share/applications
+      - name: (Ubuntu) Build .AppImage
+        if: matrix.os == 'ubuntu-latest'
+        working-directory: aseprite/build/bin
+        run: |
+          mkdir -p Aseprite.AppDir/usr/bin
+          mkdir -p Aseprite.AppDir/usr/share/aseprite
+          mkdir -p Aseprite.AppDir/usr/share/icons
+          mkdir -p Aseprite.AppDir/usr/share/applications
 
-      #     cp aseprite Aseprite.AppDir/usr/bin
-      #     cp aseprite.ini Aseprite.AppDir/usr/share/aseprite
-      #     cp -r data Aseprite.AppDir/usr/share/aseprite
-      #     cp $GITHUB_WORKSPACE/aseprite.png Aseprite.AppDir/usr/share/icons
-      #     cp aseprite.desktop Aseprite.AppDir/usr/share/applications
+          cp aseprite Aseprite.AppDir/usr/bin
+          cp aseprite.ini Aseprite.AppDir/usr/share/aseprite
+          cp -r data Aseprite.AppDir/usr/share/aseprite
+          cp data/icons/ase.ico Aseprite.AppDir/usr/share/icons
+          cp aseprite.desktop Aseprite.AppDir/usr/share/applications
 
-      #     appimagetool aseprite.AppDir
-      #     mv aseprite.AppImage Aseprite_${{ needs.check-version.outputs.latest_tag }}-x64.AppImage
+          appimagetool aseprite.AppDir
+          mv aseprite.AppImage Aseprite_${{ needs.check-version.outputs.latest_tag }}-x64.AppImage
 
-
+      - name: Clean up redundant files
+        if: matrix.os == 'macOS-latest' || matrix.os == 'ubuntu-latest'
+        working-directory: aseprite/build/bin
+        run: |
+          rm -f aseprite
+          rm -f aseprite.ini
+          rm -rf data
+        
       - name: Create release
         working-directory: aseprite/build
         run: |
