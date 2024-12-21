@@ -224,7 +224,9 @@ jobs:
           cp aseprite.ini Aseprite.AppDir/usr/share/aseprite
           cp -r data Aseprite.AppDir/usr/share/aseprite
           cp data/icons/ase.ico Aseprite.AppDir/usr/share/icons
-          cp aseprite.desktop Aseprite.AppDir/usr/share/applications
+          cp $GITHUB_WORKSPACE/Ubuntu/aseprite.desktop Aseprite.AppDir/usr/share/applications
+          cp $GITHUB_WORKSPACE/Ubuntu/aseprite.desktop Aseprite.AppDir
+          cp $GITHUB_WORKSPACE/Ubuntu/aseprite.png Aseprite.AppDir
 
           appimagetool aseprite.AppDir
           mv aseprite.AppImage Aseprite_${{ needs.check-version.outputs.latest_tag }}-x64.AppImage
