@@ -67,11 +67,11 @@ jobs:
     strategy:
       matrix:
         # os: [windows-latest, ubuntu-latest, macOS-latest]
-        os: [windows-latest, ubuntu-latest]
+        os: [ubuntu-latest]
         arch: [x64]
-        include:
-          - os: macOS-latest
-            arch: arm64
+        # include:
+        #   - os: macOS-latest
+        #     arch: arm64
       fail-fast: false    
     steps:
       - name: Checkout the repository
