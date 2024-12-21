@@ -214,6 +214,10 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         working-directory: aseprite/build/bin
         run: |
+          curl -o appimagetool-x86_64.AppImage -L https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x appimagetool-x86_64.AppImage
+          sudo mv appimagetool-x86_64.AppImage /usr/local/bin/appimagetool
+        
           mkdir -p Aseprite.AppDir/usr/bin
           mkdir -p Aseprite.AppDir/usr/share/aseprite
           mkdir -p Aseprite.AppDir/usr/share/icons
