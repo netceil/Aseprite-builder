@@ -35,7 +35,6 @@ jobs:
         echo "$VERSION_INFO" >> $GITHUB_OUTPUT
         echo "EOF" >> $GITHUB_OUTPUT
         echo "${LATEST_TAG}" > ${LATEST_TAG}.txt
-
     - name: Load version from cache
       id: version_check
       uses: actions/cache@v3
