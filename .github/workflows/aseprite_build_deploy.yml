@@ -1,8 +1,6 @@
 name: Build and deploy Aseprite
 
 on:
-  schedule:
-    - cron: '0 0 * * *'
   push:
     branches: [ "main" ]
   # pull_request:
@@ -66,8 +64,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # os: [windows-latest, ubuntu-latest, macOS-latest]
-        os: [ubuntu-latest]
+        os: [windows-latest]
+        # os: [ubuntu-latest]
         arch: [x64]
         # include:
         #   - os: macOS-latest
