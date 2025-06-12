@@ -92,22 +92,22 @@ jobs:
       - name: Download Skia if not in cache (linux)
         if: steps.skia-cache.outputs.cache-hit != 'true' && matrix.os == 'ubuntu-latest'
         run: |
-          curl -o Skia-${{ runner.os }}-Release-X64.zip -L https://github.com/aseprite/skia/releases/download/m102-861e4743af/Skia-${{ runner.os }}-Release-x64-libstdc++.zip
+          curl -o Skia-${{ runner.os }}-Release-X64.zip -L https://github.com/aseprite/skia/releases/download/m124-08a5439a6b/Skia-${{ runner.os }}-Release-x64-libstdc++.zip
           unzip Skia-${{ runner.os }}-Release-X64.zip -d skia
       - name: Download Skia if not in cache (macOS x64)
         if: steps.skia-cache.outputs.cache-hit != 'true' && matrix.os == 'macOS-latest' && matrix.arch == 'x64'
         run: |
-          curl -o Skia-${{ runner.os }}-Release-X64.zip -L https://github.com/aseprite/skia/releases/download/m102-861e4743af/Skia-${{ runner.os }}-Release-x64.zip
+          curl -o Skia-${{ runner.os }}-Release-X64.zip -L https://github.com/aseprite/skia/releases/download/m124-08a5439a6b/Skia-${{ runner.os }}-Release-x64.zip
           unzip Skia-${{ runner.os }}-Release-X64.zip -d skia
       - name: Download Skia if not in cache (macOS arm64)
         if: steps.skia-cache.outputs.cache-hit != 'true' && matrix.os == 'macOS-latest' && matrix.arch == 'arm64'
         run: |
-          curl -o Skia-${{ runner.os }}-Release-arm64.zip -L https://github.com/aseprite/skia/releases/download/m102-861e4743af/Skia-${{ runner.os }}-Release-arm64.zip
+          curl -o Skia-${{ runner.os }}-Release-arm64.zip -L https://github.com/aseprite/skia/releases/download/m124-08a5439a6b/Skia-${{ runner.os }}-Release-arm64.zip
           unzip Skia-${{ runner.os }}-Release-arm64.zip -d skia
       - name: Download Skia if not in cache (Windows)
         if: steps.skia-cache.outputs.cache-hit != 'true' && matrix.os == 'windows-latest'
         run: |
-          curl -o Skia-${{ runner.os }}-Release-X64.zip -L https://github.com/aseprite/skia/releases/download/m102-861e4743af/Skia-${{ runner.os }}-Release-x64.zip
+          curl -o Skia-${{ runner.os }}-Release-X64.zip -L https://github.com/aseprite/skia/releases/download/m124-08a5439a6b/Skia-${{ runner.os }}-Release-x64.zip
           unzip Skia-${{ runner.os }}-Release-X64.zip -d skia
       - name: Download Aseprite release
         run: |
